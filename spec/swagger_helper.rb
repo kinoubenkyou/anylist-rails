@@ -14,6 +14,14 @@ RSpec.configure do |config|
   # By default, the operations defined in spec files are added to the first
   # document below. You can override this behavior by adding a openapi_spec tag to the
   # the root example_group in your specs, e.g. describe '...', openapi_spec: 'v2/swagger.json'
+  components_dir_path = Rails.root.join('swagger', 'v1', 'components')
+  component_schemas = {}
+
+  Dir.glob(File.join(components_dir_path, '*.yaml')).each do |path|
+    key = File.basename(path, '.*')
+    component_schemas[key] = YAML.safe_load(File.read(path))
+  end
+
   config.openapi_specs = {
     'v1/swagger.yaml' => {
       openapi: '3.0.1',
@@ -24,14 +32,15 @@ RSpec.configure do |config|
       paths: {},
       servers: [
         {
-          url: 'https://{defaultHost}',
+          url: '{defaultHost}',
           variables: {
             defaultHost: {
-              default: 'www.example.com'
+              default: 'http://localhost:3000'
             }
           }
         }
-      ]
+      ],
+      components: { schemas: component_schemas }
     }
   }
 

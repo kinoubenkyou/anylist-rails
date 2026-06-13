@@ -3,9 +3,110 @@ openapi: 3.0.1
 info:
   title: API V1
   version: v1
-paths: {}
+paths:
+  "/api/v1/lists":
+    get:
+      summary: list lists
+      tags:
+      - Lists
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/lists_show"
+    post:
+      summary: create list
+      tags:
+      - Lists
+      parameters: []
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/lists_show"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/lists_create"
+  "/api/v1/lists/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show list
+      tags:
+      - Lists
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/lists_show"
+    patch:
+      summary: update list
+      tags:
+      - Lists
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/lists_show"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/lists_update"
+    delete:
+      summary: delete list
+      tags:
+      - Lists
+      responses:
+        '204':
+          description: successful
 servers:
-- url: https://{defaultHost}
+- url: "{defaultHost}"
   variables:
     defaultHost:
-      default: www.example.com
+      default: http://localhost:3000
+components:
+  schemas:
+    lists_create:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+      - name
+    lists_show:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    lists_update:
+      type: object
+      properties:
+        name:
+          type: string
