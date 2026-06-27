@@ -4,6 +4,93 @@ info:
   title: API V1
   version: v1
 paths:
+  "/api/v1/lists/{list_id}/items":
+    parameters:
+    - name: list_id
+      in: path
+      description: list_id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: list items
+      tags:
+      - Items
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/items_show"
+    post:
+      summary: create item
+      tags:
+      - Items
+      parameters: []
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/items_show"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/items_create"
+  "/api/v1/lists/{list_id}/items/{id}":
+    parameters:
+    - name: list_id
+      in: path
+      description: list_id
+      required: true
+      schema:
+        type: string
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show item
+      tags:
+      - Items
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/items_show"
+    patch:
+      summary: update item
+      tags:
+      - Items
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/items_show"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/items_update"
+    delete:
+      summary: delete item
+      tags:
+      - Items
+      responses:
+        '204':
+          description: successful
   "/api/v1/lists":
     get:
       summary: list lists
@@ -85,6 +172,38 @@ servers:
       default: http://localhost:3000
 components:
   schemas:
+    items_create:
+      type: object
+      properties:
+        value:
+          type: string
+        description:
+          type: string
+      required:
+      - value
+      - description
+    items_show:
+      type: object
+      properties:
+        id:
+          type: integer
+        value:
+          type: string
+        description:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    items_update:
+      type: object
+      properties:
+        value:
+          type: string
+        description:
+          type: string
     lists_create:
       type: object
       properties:

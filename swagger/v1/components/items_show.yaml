@@ -1,0 +1,14 @@
+type: object
+properties:
+  id:
+    type: integer
+  value:
+    type: string
+  description:
+    type: string
+  created_at:
+    type: string
+    format: date-time
+  updated_at:
+    type: string
+    format: date-time
